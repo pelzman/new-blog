@@ -1,13 +1,14 @@
-import React,{useState, useEffect, useRef} from 'react';
-import { View,StyleSheet, Button, TextInput, Pressable, Text } from 'react-native';
+import React,{useState, useEffect, useRef, ActivityIndicator } from 'react';
+import { View,StyleSheet, Button, TextInput, TouchableOpacity , Text, ImageBackground, ScrollView, Alert } from 'react-native';
  import { Formik } from 'formik';
 
  import axios from 'axios';
 import { globalStyles } from '../../utils/globalStyles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 export default function Login({navigation}) {
-const navigate = useNavigate();
+
   
 //     const[email, setEmail] = useState('')
 //     const[password, setPassword] = useState('')
@@ -17,7 +18,7 @@ const navigate = useNavigate();
  
 // }f
 
-  return (
+  return (   
     <Formik
     initialValues={{ email: '', password: '' }}
      onSubmit={(values) =>{
@@ -40,18 +41,22 @@ axios(config)
 
   console.log(JSON.stringify(response.data));
 
+  
   const value = response.data.data.access_token
+
   AsyncStorage.setItem("access_token", JSON.stringify(value));
+   navigation.navigate('Home')
 
 })
 .catch(function (error) {
   console.log(error);
+ 
 });
      }}
     >
       {({ handleChange, handleBlur, handleSubmit, values }) =>(
 
- <View style={styles.container}>
+  <View style={styles.container}>
         <TextInput      
        placeholder="Enter Your Email"
        style={globalStyles.primaryInput}
@@ -65,47 +70,38 @@ axios(config)
          onChangeText={handleChange('password')}
            onBlur={handleBlur('password')}
            value={values.password}
+           secureTextEntry = {true}
        />
-      <Button 
-       title='Login'
-       onPress={handleSubmit}
-       onPress={(()=>navigate('/Home'))}
+      <TouchableOpacity
       
-      /> 
-
-      <Text
-      onPress={()=>navigation.navigate('Register')}
-      style={{fontSize:20, marginTop:10, backgroundColor:'gray', color:'white'}}
+       onPress={handleSubmit}       
+      //  onPress={(()=>navigation.navigate( 'Home'))}      
+      > 
+       <Text style={{backgroundColor:'green',paddingHorizontal:40, paddingVertical:10, color:'#fff'}}>Login</Text>
+      </TouchableOpacity>
+       <TouchableOpacity   onPress={()=>navigation.navigate('Register')}>
+      <Text style={{fontSize:20, marginTop:10, backgroundColor:'gray', color:'white'}}
       > Sign Up Here</Text>    
-      
+      </TouchableOpacity>
     
     </View>
       )}
       
+      
     </Formik>
+   
+  
   )
 }
 const styles = StyleSheet.create({
  container: {
   justifyContent: 'center',
-  alignItems:'center',
-  backgroundColor:'#fff',
-  flex: 1
- },
- touchableContainer:{ 
-   flexDirection: 'row',
-  justifyContent:'space-between',
-  width:'50%'
+  alignItems:'center',  
+  flex:1,
+  
   
  },
- displayPicture:{
-  width: 50,
-  height: 50,
-  borderRadius: 25,
-  backgroundColor:'gray',
-  marginBottom:5
 
- },
  text:{
   color: '#fff'
  }

@@ -1,14 +1,15 @@
 import React,{useState, useEffect} from 'react'
-import { View, Text,StyleSheet, Button, TouchableOpacity,  Image, ScrollView} from 'react-native'
+import { View, Text,StyleSheet, Button, TouchableOpacity,  Image, ScrollView, Dimensions} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Formik } from 'formik'
 import axios from 'axios'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
+import FooterNav from '../components/footer';
 
 import { globalStyles } from '../../utils/globalStyles';
 
 
-export default function Profile() {
+export default function Profile({route, navigation}) {
   const[logout, setLogout] = useState('')
   const logoutUser = () =>{
 
@@ -50,6 +51,8 @@ axios(config)
       },(data)=>setDisplayPicture(data.assets[0].uri))
     }    
   return (
+    <View>
+      <View style={{height:Dimensions.get('window').height - 110}} >
    <ScrollView>
 <View style={styles.container}>
        <Image 
@@ -84,16 +87,20 @@ axios(config)
         </View>
        </View>     
        
-       <View  style={{paddingTop: 170}}  >
+       <View  style={{paddingTop: 120}}  >
        <TouchableOpacity
-       style={{width: 500 , height: 50, backgroundColor: 'green'}}
+       style={{width: 500 , height: 50, backgroundColor: 'lightgreen' }}
+       onPress={()=>navigation.navigate('Login')}
        >
   <Text style={styles.log}>Logout</Text>
        </TouchableOpacity>
        </View>        
     </View>
    </ScrollView>
+    </View>
+     <FooterNav route={route} navigation={navigation} active="Profile"/>
    
+   </View>
   )
 }
 const styles = StyleSheet.create({

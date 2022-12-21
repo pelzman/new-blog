@@ -5,7 +5,8 @@ primaryInput:{
     width: '80%',
     margin:12,
     borderBottomWidth: 0.8,
-    borderBottomColor:'blue'
+    borderBottomColor:'green',
+    
 },
 
 primaryContainer: {
@@ -20,6 +21,7 @@ color:'rgba(0,0,0,0.7)',
 primaryText: {
  fontSize: 22,
  fontFamily: 'Poppins-Bold',
+ color:'#fff'
 },
 
 secondaryText:{

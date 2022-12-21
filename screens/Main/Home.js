@@ -1,28 +1,19 @@
 import React,{useState, useEffect} from 'react'
-import { View, Text, TouchableHighlight, StyleSheet, Image , ScrollView  } from 'react-native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { View, Text, TouchableHighlight, StyleSheet, Image , ScrollView,ActivityIndicator, Dimensions  } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios'
 import {Card} from 'react-native-paper'
+import FooterNav from '../components/footer';
 
-export default function Home({navigation}) {
 
 
-   const [data, setData] = useState([ ])
+export default function Home({route, navigation}) {
+
+
+  const [data, setData] = useState([])
+
    
  
-
-//    try {
-//     const getData =()=>{
-//   axios.get(url)
-//   .then((response)=>{
-//     setData(data.articles)
-//   })
-
-//  }
-//    } catch (error) {
-//     console.log(error)
-//    }  
  const getArticles = async ()=>{
 var config = {
   method: 'get',
@@ -34,27 +25,36 @@ axios(config)
 .then(function (response) {
   console.log(JSON.stringify(response.data));
   setData(response.data.articles)
+ 
 })
 .catch(function (error) {
   console.log(error);
+  
 });
  } 
  
  useEffect(()=>{
-  getArticles()
+  getArticles();
  }, [])
  
 
-  return(
-    <ScrollView> 
-      
+  return (
+  <View >
+    < View style={{height:Dimensions.get('window').height - 110}}>
+<ScrollView>
+    
+    <View style={{flex:1, flexDirection:'row', alignItems:'center',
+     justifyContent:'center'}}> 
+      <Text style={{padding:10}} > <Icon name="globe" size={50} color="#900"  /> </Text>
+     
   <Text style={{
-   
     fontSize:30, 
     color:"green", 
     fontWeight:'400', 
     textAlign:'center',
-    marginBottom:10}}>World Wide Updates</Text>     
+    marginBottom:10}}>Daily International  News</Text> 
+    </View>  
+     <View>  
       {data.map((article, index)=>{
         return(
          <Card style={styles.cardContainer} key={index}>
@@ -75,10 +75,18 @@ axios(config)
  
         )
       })}
-    
+    </View> 
     </ScrollView>
+    </View>
+    
+      <FooterNav route={route} navigation={navigation} active="Home"
+      style={{flex:1, alignItems:'center', justifyContent:'center'}}/>
+    
+    
+</View>
   )
 }
+
 
 const styles = StyleSheet.create({
 cardContainer:{
@@ -94,9 +102,11 @@ cardContainer:{
 },
 title:{
   fontSize:24,
-  fontWeight: '400',
+  fontWeight:'bold',
 color:'black',
-marginBottom:5
+marginBottom:5,
+
+
 },
 
 imgContainer:{
@@ -108,6 +118,7 @@ publish:{
 fontSize:15, 
 color:'black',
 textAlign:"justify"
+
 },
 desc:{
   fontSize:18,
@@ -118,5 +129,10 @@ desc:{
 author:{
  fontSize:20,
 padding:5
+},
+
+footer:{
+flex:1,
+alignItems:'center'
 }
-})
+});

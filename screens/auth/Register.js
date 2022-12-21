@@ -1,13 +1,14 @@
 import React,{useState, useEffect} from 'react'
-import { View, Text,StyleSheet, Button, TouchableOpacity, TextInput, Image, Alert } from 'react-native'
+import { View, Text,StyleSheet, Button, TouchableOpacity, TextInput, Image, Alert, ScrollView, ImageBackground } from 'react-native'
  import { Formik } from 'formik'
 import axios from 'axios'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker'
 
+
 import { globalStyles } from '../../utils/globalStyles';
 
-export default function Register() {
-
+export default function Register({route, navigation}) {
+  
     // const[email, setEmail] = useState('')
     // const[password, setPassword] = useState('')
     // const[name, setName] = useState('')
@@ -20,6 +21,11 @@ export default function Register() {
 
     
   return (
+    
+      <ImageBackground
+      source={{uri:'https://images.pexels.com/photos/14664633/pexels-photo-14664633.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}}
+      style={{flex:1, justifyContent:'center', resizeMode:'cover' }}
+      >
     <ScrollView>
          <Formik 
      initialValues={{firstName: '', lastName: '', email: '', phone: '', password: '' }}
@@ -50,10 +56,11 @@ var config = {
 
 axios(config)
 .then(function (response) {
-
   console.log(JSON.stringify(response.data));
+   navigation.navigate('Login')
   const role= response.data.data.role;
   Alert.alert("Success", "You've successfully registered.")
+ 
 })
 .catch(function (error) {
   console.log(error);
@@ -72,21 +79,21 @@ axios(config)
        />
        <View style={styles.touchableContainer}>
        <TouchableOpacity onPress={onPickPicture}>
-        <Text>Pick Picture</Text>
+        <Text style={{color:'#fff', textAlign:'center'}}>Upload Picture</Text>
        </TouchableOpacity>
-       <TouchableOpacity >
-        <Text>Click Picture</Text>
-       </TouchableOpacity>
+       
        </View>
        <TextInput      
        placeholder="First Name"
-       style={globalStyles.primaryInput}
+        placeholderTextColor="white"
+       style={{...globalStyles.primaryInput, color:'white'}}
          onChangeText={handleChange('firstName')}
            onBlur={handleBlur('firstName')}
            value={values.firstName}
        />
            <TextInput      
        placeholder="Last Name"
+        placeholderTextColor="white"
        style={globalStyles.primaryInput}
           onChangeText={handleChange('lastName')}
            onBlur={handleBlur('lastName')}
@@ -94,6 +101,7 @@ axios(config)
        />
          <TextInput       
        placeholder="Email"
+        placeholderTextColor="white"
        style={globalStyles.primaryInput}
             onChangeText={handleChange('email')}
            onBlur={handleBlur('email')}
@@ -101,6 +109,7 @@ axios(config)
        />
           <TextInput       
        placeholder="Enter Phone Number"
+        placeholderTextColor="white"
        style={globalStyles.primaryInput}
             onChangeText={handleChange('phone')}
             keyboardType='numeric'
@@ -109,6 +118,8 @@ axios(config)
        />
          <TextInput       
        placeholder="Enter Password"
+       placeholderTextColor="white"
+       
        style={globalStyles.primaryInput}
           onChangeText={handleChange('password')}
            onBlur={handleBlur('password')}
@@ -121,17 +132,23 @@ axios(config)
            onBlur={handleBlur('password')}
            value={values.password}
        /> */}
-      <Button
-      title="Register"
+       
+      <TouchableOpacity
+   
       onPress={handleSubmit}
-      onPress={(()=>navigate('/Login'))}     
-      />     
+    //  onPress={(()=>navigation.navigate('Login'))}  
+          
+      > 
+      <Text style={{backgroundColor:'green',padding:10, color:'#fff'}}>Register</Text>
+     </TouchableOpacity>    
     </View>
 
   )}
     
     </Formik>
     </ScrollView>
+    </ImageBackground>
+    
  
   )
 }
@@ -139,21 +156,22 @@ const styles = StyleSheet.create({
  container: {
   justifyContent: 'center',
   alignItems:'center',
-  backgroundColor:'#fff',
-  flex: 1
+  flex: 1,
+  
  },
  touchableContainer:{ 
-   flexDirection: 'row',
-  justifyContent:'space-between',
-  width:'50%'
+  
+  marginTop:10
+  
   
  },
  displayPicture:{
   width: 50,
   height: 50,
   borderRadius: 25,
-  backgroundColor:'gray',
-  marginBottom:5
+  backgroundColor:'#fff',
+  marginBottom:5,
+ marginTop:10
 
  }
 })
